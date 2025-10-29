@@ -1,13 +1,17 @@
 {
   "name": "futbol-backend",
   "version": "1.0.0",
+  "description": "Backend para generador de equipos de fútbol",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
+  "author": "Alex Quesada",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "mongoose": "^7.4.0",
     "cors": "^2.8.5",
-    "mongodb": "^5.6.0"
+    "dotenv": "^16.3.1"
   }
 }
