@@ -5,7 +5,7 @@ import cors from 'cors';
 const app = express();
 
 // --- CORS ---
-app.use(cors({ origin: 'https://sparkly-axolotl-3bff00.netlify.app' })); 
+app.use(cors({ origin: 'https://generadorequiposalkor11.netlify.app' })); 
 // Para desarrollo puedes usar: app.use(cors());
 
 // --- Middleware ---
@@ -86,3 +86,4 @@ const PORT = process.env.PORT || 3000;
 mongoose.connect(process.env.MONGO_URI)
   .then(()=>app.listen(PORT, ()=>console.log(`Servidor en marcha en puerto ${PORT}`)))
   .catch(err=>console.error('Error MongoDB:', err));
+
