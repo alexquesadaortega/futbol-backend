@@ -1,4 +1,3 @@
-
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -8,10 +7,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // --- MIDDLEWARE ---
-app.use(cors({ origin: "https://generadorequiposalkor11.netlify.app" }));
-app.use(cors()); // permite cualquier origen
-// Si quieres restringir solo a tu frontend:
-// app.use(cors({ origin: 'https://generadorequiposalkor11.netlify.app' }));
+app.use(cors({
+  origin: "https://generadorequiposalkor11.netlify.app", // tu frontend
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 app.use(express.json());
 
@@ -20,8 +20,8 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(()=>console.log('MongoDB conectado'))
-.catch(err=>console.error('Error MongoDB:', err));
+.then(()=>console.log('✅ MongoDB conectado'))
+.catch(err=>console.error('❌ Error MongoDB:', err));
 
 // --- MODELOS ---
 const userSchema = new mongoose.Schema({
@@ -40,6 +40,7 @@ const User = mongoose.model('User', userSchema);
 app.post('/register', async (req, res) => {
   const { username, password } = req.body;
   if(!username || !password) return res.status(400).json({ message: 'Rellena todos los campos' });
+
   try {
     const exists = await User.findOne({ username });
     if(exists) return res.status(400).json({ message: 'Usuario ya existe' });
@@ -57,10 +58,16 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   if(!username || !password) return res.status(400).json({ message: 'Rellena todos los campos' });
+
   try {
     const user = await User.findOne({ username, password });
     if(!user) return res.status(400).json({ message: 'Usuario o contraseña incorrecta' });
-    res.json(user); // devuelve info del usuario, incluyendo players
+
+    // 👇 solo enviamos lo necesario
+    res.json({ 
+      message: 'Login correcto', 
+      username: user.username 
+    });
   } catch(err) {
     console.error(err);
     res.status(500).json({ message: 'Error al iniciar sesión' });
@@ -71,11 +78,14 @@ app.post('/login', async (req, res) => {
 app.post('/addPlayer', async (req,res)=>{
   const { username, name, pos, media } = req.body;
   if(!username || !name || !pos || media == null) return res.status(400).json({ message: 'Datos incompletos' });
+
   try {
     const user = await User.findOne({ username });
     if(!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+
     user.players.push({ name, pos, media });
     await user.save();
+
     res.json({ message: 'Jugador añadido', players: user.players });
   } catch(err) {
     console.error(err);
@@ -97,6 +107,4 @@ app.get('/players/:username', async (req,res)=>{
 });
 
 // --- START SERVER ---
-app.listen(PORT, ()=>console.log(`Servidor escuchando en puerto ${PORT}`));
-
-
+app.listen(PORT, ()=>console.log(`🚀 Servidor escuchando en puerto ${PORT}`));
