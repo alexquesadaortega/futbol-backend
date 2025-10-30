@@ -84,31 +84,39 @@ app.post("/login", async (req, res) => {
 // ---------------------------------------------
 app.post("/add-player", async (req, res) => {
   try {
-    console.log("📩 Datos recibidos:", req.body);
+    console.log("📩 Datos recibidos en /add-player:", JSON.stringify(req.body, null, 2));
 
     const { username, player } = req.body;
 
-    // Validaciones
     if (!username) {
+      console.warn("⚠️ Falta username");
       return res.json({ success: false, message: "Falta el nombre de usuario" });
     }
 
     if (!player || !player.name || !player.pos || player.media === undefined) {
+      console.warn("⚠️ Faltan datos del jugador:", player);
       return res.json({ success: false, message: "Faltan datos del jugador" });
     }
 
     const user = await User.findOne({ username });
     if (!user) {
+      console.warn("⚠️ Usuario no encontrado:", username);
       return res.json({ success: false, message: "Usuario no encontrado" });
     }
 
-    user.players.push(player);
+    user.players.push({
+      name: player.name,
+      pos: player.pos,
+      media: Number(player.media),
+    });
+
     await user.save();
 
+    console.log("✅ Jugador guardado correctamente");
     res.json({ success: true, message: "Jugador agregado correctamente" });
   } catch (err) {
-    console.error("❌ Error al añadir jugador:", err);
-    res.json({ success: false, message: "Error en el servidor" });
+    console.error("❌ Error al guardar el jugador:", err.message);
+    res.json({ success: false, message: "Error al guardar el jugador" });
   }
 });
 
@@ -166,5 +174,6 @@ app.post("/delete-player", async (req, res) => {
 // ---------------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor escuchando en el puerto ${PORT}`));
+
 
 
