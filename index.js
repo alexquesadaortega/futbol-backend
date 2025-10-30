@@ -62,7 +62,6 @@ app.post("/register", async (req, res) => {
 
 // ---------------------------------------------
 // 🔑 Login
-// ---------------------------------------------
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -72,12 +71,14 @@ app.post("/login", async (req, res) => {
       return res.json({ success: false, message: "Usuario o contraseña incorrectos" });
     }
 
-    res.json({ success: true, message: "Login correcto" });
+    // Devolver el usuario completo con los jugadores
+    res.json({ success: true, message: "Login correcto", user });
   } catch (err) {
     console.error(err);
     res.json({ success: false, message: "Error en el servidor" });
   }
 });
+
 
 // ---------------------------------------------
 // ➕ Añadir jugador
@@ -174,6 +175,7 @@ app.post("/delete-player", async (req, res) => {
 // ---------------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor escuchando en el puerto ${PORT}`));
+
 
 
 
