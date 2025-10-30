@@ -1,3 +1,5 @@
+const cors = require("cors");
+app.use(cors({ origin: "https://generadorequiposalkor11.netlify.app" }));
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -96,3 +98,4 @@ app.get('/players/:username', async (req,res)=>{
 
 // --- START SERVER ---
 app.listen(PORT, ()=>console.log(`Servidor escuchando en puerto ${PORT}`));
+
