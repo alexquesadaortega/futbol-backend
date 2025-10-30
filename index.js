@@ -1,5 +1,4 @@
-const cors = require("cors");
-app.use(cors({ origin: "https://generadorequiposalkor11.netlify.app" }));
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -9,6 +8,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // --- MIDDLEWARE ---
+app.use(cors({ origin: "https://generadorequiposalkor11.netlify.app" }));
 app.use(cors()); // permite cualquier origen
 // Si quieres restringir solo a tu frontend:
 // app.use(cors({ origin: 'https://generadorequiposalkor11.netlify.app' }));
@@ -98,4 +98,5 @@ app.get('/players/:username', async (req,res)=>{
 
 // --- START SERVER ---
 app.listen(PORT, ()=>console.log(`Servidor escuchando en puerto ${PORT}`));
+
 
