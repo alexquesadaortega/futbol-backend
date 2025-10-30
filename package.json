@@ -1,14 +1,16 @@
 {
-  "name": "futbol-frontend",
+  "name": "futbol-backend",
   "version": "1.0.0",
-  "description": "Frontend Generador de Equipos",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "live-server"
+    "start": "node index.js"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "live-server": "^1.2.2"
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0"
   }
 }
 
