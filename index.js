@@ -72,7 +72,7 @@ app.post("/login", async (req, res) => {
       return res.json({ success: false, message: "Usuario o contraseña incorrectos" });
     }
 
-    res.json({ success: true, message: "Login correcto" });
+    res.json({ success: true, message: "Login correcto", user });
   } catch (err) {
     console.error(err);
     res.json({ success: false, message: "Error en el servidor" });
@@ -174,6 +174,7 @@ app.post("/delete-player", async (req, res) => {
 // ---------------------------------------------
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Servidor escuchando en el puerto ${PORT}`));
+
 
 
 
